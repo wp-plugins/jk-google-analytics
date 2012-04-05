@@ -1,0 +1,94 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: JK - Google Analytics\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-04-04 13:35+0100\n"
+"PO-Revision-Date: 2012-04-04 13:36+0100\n"
+"Last-Translator: Karl STEIN <jalik26@gmail.com>\n"
+"Language-Team: Karl STEIN <karl.stein.pro@gmail.com>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Poedit-KeywordsList: __;_e;_n;_x\n"
+"X-Poedit-Basepath: /var/www/wordpress/wp-content/plugins/jk-google-analytics\n"
+"X-Poedit-Language: French\n"
+"X-Poedit-Country: FRANCE\n"
+"X-Poedit-SourceCharset: utf-8\n"
+"Plural-Forms: nplurals=2;plural=n>2\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: jk-google-analytics.php:88
+msgid "Single domain"
+msgstr "Un seul domaine"
+
+#: jk-google-analytics.php:89
+msgid "Multiple subdomains"
+msgstr "Sous-domaines multiples"
+
+#: jk-google-analytics.php:90
+msgid "Multiple domains"
+msgstr "Domaines multiples"
+
+#: jk-google-analytics.php:134
+msgid "Basic options"
+msgstr "Options basiques"
+
+#: jk-google-analytics.php:137
+msgid "Tracking ID"
+msgstr "ID de suivi"
+
+#: jk-google-analytics.php:138
+msgid "Tracking target"
+msgstr "Cible du suivi"
+
+#: jk-google-analytics.php:139
+msgid "Urchin mode"
+msgstr "Mode urchin"
+
+#: jk-google-analytics.php:148
+msgid "Advanced options"
+msgstr "Options avancées"
+
+#: jk-google-analytics.php:151
+msgid "Do not track admins (recommended)"
+msgstr "Désactiver le suivi des Administrateurs (recommandé)"
+
+#: jk-google-analytics.php:152
+msgid "Do not track archives"
+msgstr "Désactiver le suivi des archives"
+
+#: jk-google-analytics.php:153
+msgid "Do not track attachments"
+msgstr "Désactiver le suivi des images"
+
+#: jk-google-analytics.php:154
+msgid "Do not track pages"
+msgstr "Désactiver le suivi des pages"
+
+#: jk-google-analytics.php:155
+msgid "Do not track previews (recommended)"
+msgstr "Désactiver le suivi des aperçus (recommandé)"
+
+#: jk-google-analytics.php:156
+msgid "Do not track searches"
+msgstr "Désactiver le suivi des recherches"
+
+#: jk-google-analytics.php:284
+msgid "Google Analytics options"
+msgstr "Options de Google Analytics"
+
+#: jk-google-analytics.php:295
+msgid "Save Changes"
+msgstr "Enregistrer les modifications"
+
+#: jk-google-analytics.php:330
+msgid "You can disable tracking on some pages (note: admin pages are never tracked)."
+msgstr "Vous pouvez désactiver le suivi de certaines pages (remarque: les pages d'administration ne sont jamais suivies)."
+
+#: jk-google-analytics.php:338
+msgid "Fill in your account informations."
+msgstr "Remplissez les informations de votre compte."
+
+#~ msgid "Fill in the informations that Google Analytics has given to you."
+#~ msgstr "Remplissez les informations que Google Analytics vous a donné."
