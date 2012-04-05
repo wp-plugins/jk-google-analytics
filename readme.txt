@@ -22,6 +22,8 @@ http://www.google.com/analytics
 
 == Screenshots ==
 
+1. screenshot-1.png
+
 == Frequently Asked Questions ==
 
 == Changelog ==
