@@ -22,6 +22,8 @@ http://www.google.com/analytics
 
 == Screenshots ==
 
+1. You can configure contents that will be tracked.
+
 == Frequently Asked Questions ==
 
 == Changelog ==
