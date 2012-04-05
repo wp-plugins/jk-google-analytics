@@ -3,7 +3,7 @@ Contributors: Karl STEIN
 Tags: jk, jalik, google, analytics
 Requires at least: 2.7.0
 Tested up to: 3.3.1
-Stable tag: trunk
+Stable tag: 1.0
 
 Activate Google Analytics on your website.
 
