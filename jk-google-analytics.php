@@ -6,7 +6,7 @@
  * Description: Use Google Analytics on your website.
  * Author: Karl STEIN
  * Author URI: http://www.karl-stein.com/
- * Version: 1.1a
+ * Version: 1.1.1
  * Licence: GNU GPLv2
  *
  *
@@ -57,7 +57,7 @@ define('JKGA_OPTIONS_PAGE', 'jk-google-analytics');
  * Plugin version
  * @var numeric
  */
-define('JKGA_VERSION', '1.1a');
+define('JKGA_VERSION', '1.1.1');
 
 /**
  * Check if the current content or user is tracked
