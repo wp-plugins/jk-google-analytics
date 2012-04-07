@@ -21,6 +21,8 @@ By default everything is tracked, but you can exclude contents (archives, search
 
 == Screenshots ==
 
+1. screenshot-1.png
+
 == Frequently Asked Questions ==
 
 == Changelog ==
