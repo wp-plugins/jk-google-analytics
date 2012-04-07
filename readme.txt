@@ -3,7 +3,7 @@ Contributors: Karl STEIN
 Tags: google, analytics, jk
 Requires at least: 2.7.0
 Tested up to: 3.3.1
-Stable tag: 1.1
+Stable tag: 1.0
 
 Use Google Analytics on your website.
 
