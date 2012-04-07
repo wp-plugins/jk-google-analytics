@@ -12,6 +12,8 @@ Use Google Analytics on your website.
 Enable Google Analytics on your website and enjoy your stats on http://www.google.com/analytics.
 By default everything is tracked, but you can exclude contents (archives, searches...) or users (admins, editors...).
 
+* NOTE: If you upgraded or installed the version 1.1 on the 7th of April and you are experiencing bugs, it's because of line in the code I forgot to remove, sorry for the inconvenience, but don't panic, you can fix the error by simply removing the plugin's folder in wordpress plugins directory "wordpress/wp-content/plugins/jk-google-analytics", for that use your FTP software. It will fix the error, then you could trust me and reinstall the new fixed version 1.1 (without any bugs) or search for another Google Analytics plugin, sorry again but new downloads should not have any errors.
+
 == Installation ==
 
 1. Extract the plugin to your plugins directory.
