@@ -11,9 +11,9 @@ Use Google Analytics on your website.
 
 Enable Google Analytics on your website and see your daily stats on http://www.google.com/analytics.
 
-= IMPORTANT NOTE =
+= Important Note About 1.1 version =
 
-If you upgraded or installed the version 1.1 on the 7th of April and you are experiencing bugs, don't panic you can fix the error by simply upgrading to version 1.1.1 or by removing the plugin's folder in wordpress plugins directory "wordpress/wp-content/plugins/jk-google-analytics", for that use your FTP software. It will fix the error, then you could trust me and reinstall the new fixed version 1.1.1 (without any bugs) or search for another Google Analytics plugin, sorry again but new downloads should not have any errors.
+If you upgraded or installed the version 1.1 on the 7th of April and you are experiencing bugs, don't panic you can fix the error by simply upgrading to version 1.1.1 or by removing with your FTP software the plugin's folder located in wordpress plugins directory "wordpress/wp-content/plugins/jk-google-analytics" and then reinstall the new fixed version 1.1.1.
 
 = Features =
 
