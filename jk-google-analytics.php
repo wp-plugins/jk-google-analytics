@@ -72,7 +72,6 @@ function jkga_check_tracking()
 	|| jkga_get_option('exclude_content_search') && is_search()
 	)
 	{
-		exit("EXCLUDE CONTENT");
 		return FALSE;
 	}
 	// Check if the user is tracked
@@ -84,7 +83,6 @@ function jkga_check_tracking()
 	|| jkga_get_option('exclude_user_visitor') && !jkga_user_has_role()
 	)
 	{
-		exit("EXCLUDE USER");
 		return FALSE;
 	}
 	return TRUE;
