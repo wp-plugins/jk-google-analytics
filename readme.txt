@@ -17,12 +17,14 @@ If you upgraded or installed the version 1.1 on the 7th of April and you are exp
 
 = Features =
 
+
 * Track a single domain, multiple domains or multiple sub-domains.
 * Track using old Urchin Web Analytics.
 * Exclude contents from tracking (archives, searches, post previews...).
 * Exclude users from tracking (admins, editors, contributors...).
 
-= Laguages =
+= Languages =
+
 
 * English
 * Français
