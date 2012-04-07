@@ -2,8 +2,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: JK - Google Analytics\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-04-04 13:34+0100\n"
-"PO-Revision-Date: 2012-04-04 13:35+0100\n"
+"POT-Creation-Date: 2012-04-07 10:36+0100\n"
+"PO-Revision-Date: 2012-04-07 10:36+0100\n"
 "Last-Translator: Karl STEIN <jalik26@gmail.com>\n"
 "Language-Team: Karl STEIN <karl.stein.pro@gmail.com>\n"
 "Language: \n"
@@ -18,75 +18,111 @@ msgstr ""
 "Plural-Forms: nplurals=2;plural=n>2\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: jk-google-analytics.php:88
+#: options.php:78
 msgid "Single domain"
 msgstr ""
 
-#: jk-google-analytics.php:89
+#: options.php:79
 msgid "Multiple subdomains"
 msgstr ""
 
-#: jk-google-analytics.php:90
+#: options.php:80
 msgid "Multiple domains"
 msgstr ""
 
-#: jk-google-analytics.php:134
-msgid "Basic options"
+#: jk-google-analytics.php:169
+msgid "Account informations"
 msgstr ""
 
-#: jk-google-analytics.php:137
+#: jk-google-analytics.php:171
 msgid "Tracking ID"
 msgstr ""
 
-#: jk-google-analytics.php:138
+#: jk-google-analytics.php:172
 msgid "Tracking target"
 msgstr ""
 
-#: jk-google-analytics.php:139
-msgid "Urchin mode"
+#: jk-google-analytics.php:173
+msgid "Urchin tracking"
 msgstr ""
 
-#: jk-google-analytics.php:148
-msgid "Advanced options"
+#: jk-google-analytics.php:178
+msgid "Excluded contents"
 msgstr ""
 
-#: jk-google-analytics.php:151
-msgid "Do not track admins (recommended)"
+#: jk-google-analytics.php:180
+msgid "Exclude archives"
 msgstr ""
 
-#: jk-google-analytics.php:152
-msgid "Do not track archives"
+#: jk-google-analytics.php:181
+msgid "Exclude attachments"
 msgstr ""
 
-#: jk-google-analytics.php:153
-msgid "Do not track attachments"
+#: jk-google-analytics.php:182
+msgid "Exclude pages"
 msgstr ""
 
-#: jk-google-analytics.php:154
-msgid "Do not track pages"
+#: jk-google-analytics.php:183
+msgid "Exclude previews (recommended)"
 msgstr ""
 
-#: jk-google-analytics.php:155
-msgid "Do not track previews (recommended)"
+#: jk-google-analytics.php:184
+msgid "Exclude searches"
 msgstr ""
 
-#: jk-google-analytics.php:156
-msgid "Do not track searches"
+#: jk-google-analytics.php:189
+msgid "Excluded users"
 msgstr ""
 
-#: jk-google-analytics.php:284
+#: jk-google-analytics.php:191
+msgid "Exclude administrators (recommended)"
+msgstr ""
+
+#: jk-google-analytics.php:192
+msgid "Exclude authors"
+msgstr ""
+
+#: jk-google-analytics.php:193
+msgid "Exclude contributors"
+msgstr ""
+
+#: jk-google-analytics.php:194
+msgid "Exclude editors"
+msgstr ""
+
+#: jk-google-analytics.php:195
+msgid "Exclude subscribers"
+msgstr ""
+
+#: jk-google-analytics.php:196
+msgid "Exclude visitors"
+msgstr ""
+
+#: jk-google-analytics.php:277
 msgid "Google Analytics options"
 msgstr ""
 
-#: jk-google-analytics.php:295
+#: jk-google-analytics.php:288
 msgid "Save Changes"
 msgstr ""
 
-#: jk-google-analytics.php:330
-msgid "You can disable tracking on some pages (note: admin pages are never tracked)."
+#: jk-google-analytics.php:302
+msgid "Incorrect tracking ID."
 msgstr ""
 
-#: jk-google-analytics.php:338
+#: jk-google-analytics.php:312
+msgid "Incorrect tracking target."
+msgstr ""
+
+#: jk-google-analytics.php:346
 msgid "Fill in your account informations."
+msgstr ""
+
+#: jk-google-analytics.php:354
+msgid "Select the contents you don't want to track."
+msgstr ""
+
+#: jk-google-analytics.php:362
+msgid "Select the users you don't want to track."
 msgstr ""
 
