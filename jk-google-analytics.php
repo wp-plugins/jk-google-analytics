@@ -157,7 +157,7 @@ add_action('init', 'jkga_init');
 function jkga_init_options()
 {
 	// Load options methods
-	require_once(dirname(__FILE__).'/options.php');
+	include_once(dirname(__FILE__).'/options.php');
 
 	// Register plugin options in an Array
 	register_setting('jkga_options', 'jkga_options', 'jkga_options_validate');
