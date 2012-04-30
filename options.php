@@ -1,39 +1,33 @@
 <?php
 
-/**
- * Return a boolean HTML checkbox
- * @param string $name
- * @param boolean|integer $default
- * @return string
- */
-function jkga_input_checkbox($name, $default = FALSE)
-{
-	return '<input type="checkbox" id="jkga_'.$name.'" name="jkga_options['.$name.']" value="1" '.(jkga_get_option($name, $default) ? 'checked' : '').' />';
-}
-
 function jkga_field_exclude_content_archive()
 {
-	print jkga_input_checkbox('exclude_content_archive');
+	print jkga_input_option('exclude_content_archive');
 }
 
 function jkga_field_exclude_content_attachment()
 {
-	print jkga_input_checkbox('exclude_content_attachment');
+	print jkga_input_option('exclude_content_attachment');
 }
 
 function jkga_field_exclude_content_page()
 {
-	print jkga_input_checkbox('exclude_content_page');
+	print jkga_input_option('exclude_content_page');
 }
 
 function jkga_field_exclude_content_preview()
 {
-	print jkga_input_checkbox('exclude_content_preview', TRUE);
+	print jkga_input_option('exclude_content_preview', TRUE);
 }
 
 function jkga_field_exclude_content_search()
 {
-	print jkga_input_checkbox('exclude_content_search');
+	print jkga_input_option('exclude_content_search');
+}
+
+function jkga_field_exclude_post()
+{
+	print jkga_input_meta('exclude_post');
 }
 
 function jkga_field_exclude_user_administrator()
@@ -84,6 +78,21 @@ function jkga_field_tracking_target()
 function jkga_field_urchin_tracking()
 {
 	print jkga_input_checkbox('urchin_tracking');
+}
+
+function jkga_input_checkbox($name, $default = FALSE)
+{
+	return '<input type="checkbox" id="jkga_'.$name.'" name="jkga_options['.$name.']" value="1" '.(jkga_get_option($name, $default) ? 'checked' : '').' />';
+}
+
+function jkga_input_meta($name, $default = FALSE)
+{
+	return '<input type="checkbox" id="jkga_meta_'.$name.'" name="_jkga_'.$name.'" value="1" '.(jkga_get_meta($name, $default) ? 'checked' : '').' />';
+}
+
+function jkga_input_option($name, $default = FALSE)
+{
+	return '<input type="checkbox" id="jkga_option_'.$name.'" name="jkga_options['.$name.']" value="1" '.(jkga_get_option($name, $default) ? 'checked' : '').' />';
 }
 
 ?>
