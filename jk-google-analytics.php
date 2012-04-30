@@ -6,7 +6,7 @@
  * Description: Use Google Analytics on your website.
  * Author: Karl STEIN
  * Author URI: http://www.karl-stein.com/
- * Version: 1.1.1
+ * Version: 1.2
  * Licence: GNU GPLv2
  *
  *
@@ -54,38 +54,34 @@ define('JKGA_MULTIPLE_DOMAINS', 3);
 define('JKGA_OPTIONS_PAGE', 'jk-google-analytics');
 
 /**
+ * Metabox name
+ * @var string
+ */
+define('JKGA_METABOX', 'jkga_metabox');
+
+/**
  * Plugin version
  * @var numeric
  */
-define('JKGA_VERSION', '1.1.1');
+define('JKGA_VERSION', '1.2');
 
 /**
- * Check if the current content or user is tracked
+ * Check nonce
+ * @param string $nid
+ * @return boolean
  */
-function jkga_check_tracking()
+function jkga_check_nonce($nid)
 {
-	// Check if the content is tracked
-	if (jkga_get_option('exclude_content_archive') && is_archive()
-	|| jkga_get_option('exclude_content_attachment') && is_attachment()
-	|| jkga_get_option('exclude_content_page') && is_page()
-	|| jkga_get_option('exclude_content_preview', TRUE) && is_preview()
-	|| jkga_get_option('exclude_content_search') && is_search()
-	)
-	{
-		return FALSE;
-	}
-	// Check if the user is tracked
-	if (jkga_get_option('exclude_user_administrator', TRUE) && jkga_user_has_role('administrator')
-	|| jkga_get_option('exclude_user_author') && jkga_user_has_role('author')
-	|| jkga_get_option('exclude_user_contributor') && jkga_user_has_role('contributor')
-	|| jkga_get_option('exclude_user_editor') && jkga_user_has_role('editor')
-	|| jkga_get_option('exclude_user_subscriber') && jkga_user_has_role('subscriber')
-	|| jkga_get_option('exclude_user_visitor') && !jkga_user_has_role()
-	)
-	{
-		return FALSE;
-	}
-	return TRUE;
+	return (bool) (isset($_POST[$nid]) && wp_verify_nonce($_POST[$nid], basename(__FILE__)));
+}
+
+/**
+ * @param string $nid
+ * @return string
+ */
+function jkga_create_nonce($nid)
+{
+	return wp_nonce_field(basename(__FILE__), $nid);
 }
 
 /**
@@ -113,19 +109,42 @@ function jkga_get_domain()
 }
 
 /**
- * Return a plugin option
+ * Return plugin option
  * @param string $name
+ * @param string $default
  * @return string
  */
 function jkga_get_option($name, $default = NULL)
 {
-	$options = (array) get_option('jkga_options');
+	$options = jkga_get_options();
 
-	if (isset($options[$name]))
+	if (is_array($options) && isset($options[$name]))
 	{
 		return $options[$name];
 	}
 	return $default;
+}
+
+/**
+ * Return plugin options
+ * @param boolean $refresh
+ * @return array|boolean
+ */
+function jkga_get_options($refresh = FALSE)
+{
+	return get_option('jkga_options', array());
+}
+
+/**
+ * Return post meta
+ * @param string $name
+ * @param string $default
+ * @return string
+ */
+function jkga_get_meta($name, $default = NULL)
+{
+	global $post;
+	return get_post_meta($post->ID, '_jkga_'.$name, TRUE);
 }
 
 /**
@@ -143,11 +162,27 @@ function jkga_init()
 
 		// Prepare options
 		add_action('admin_init', 'jkga_init_options');
+
+		// Add meta box to posts and pages
+		add_action('admin_init', 'jkga_init_metabox');
 	}
 	// Load script in footer
 	add_action('wp_footer', 'jkga_load_script', 999);
 }
 add_action('init', 'jkga_init');
+
+/**
+ * Initialize metabox on posts and pages
+ */
+function jkga_init_metabox()
+{
+	// Add metabox to page and post editing
+	add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'post', 'side', 'low');
+	add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'page', 'side', 'low');
+
+	// Save metas when post is edited
+	add_action('save_post', 'jkga_metabox_save', 10);
+}
 
 /**
  * Initialize plugin options
@@ -208,11 +243,64 @@ function jkga_init_options()
 }
 
 /**
+ * Check if current content is excluded from tracking
+ * @return boolean
+ */
+function jkga_is_excluded_content()
+{
+	return (bool) (
+		jkga_get_option('exclude_content_archive') && is_archive()
+		|| jkga_get_option('exclude_content_attachment') && is_attachment()
+		|| jkga_get_option('exclude_content_page') && is_page()
+		|| jkga_get_option('exclude_content_preview', TRUE) && is_preview()
+		|| jkga_get_option('exclude_content_search') && is_search()
+	);
+}
+
+/**
+ * Check if current post is excluded from tracking
+ * @return boolean
+ */
+function jkga_is_excluded_post()
+{
+	return (bool) jkga_get_meta('exclude_post');
+}
+
+/**
+ * Check if current user is excluded from tracking
+ * @return boolean
+ */
+function jkga_is_excluded_user()
+{
+	return (bool) (
+		jkga_get_option('exclude_user_administrator', TRUE) && jkga_user_has_role('administrator')
+		|| jkga_get_option('exclude_user_author') && jkga_user_has_role('author')
+		|| jkga_get_option('exclude_user_contributor') && jkga_user_has_role('contributor')
+		|| jkga_get_option('exclude_user_editor') && jkga_user_has_role('editor')
+		|| jkga_get_option('exclude_user_subscriber') && jkga_user_has_role('subscriber')
+		|| jkga_get_option('exclude_user_visitor') && !jkga_user_has_role()
+	);
+}
+
+/**
+ * Check if the current page is tracked
+ * @return boolean
+ */
+function jkga_is_tracked()
+{
+	return (bool) (
+		!jkga_is_excluded_content()
+		&& !jkga_is_excluded_user()
+		&& !jkga_is_excluded_post()
+	);
+}
+
+/**
  * Load and execute Analytics script
  */
 function jkga_load_script()
 {
-	if (jkga_check_tracking())
+	if (jkga_is_tracked())
 	{
 		// Enable tracking only if a tracking ID exists
 		if (jkga_get_option('tracking_id'))
@@ -257,6 +345,77 @@ function jkga_load_script()
 }
 
 /**
+ * Show metabox options
+ */
+function jkga_metabox()
+{
+	// Generate nonce
+	jkga_create_nonce('jkga_metas');
+
+	print '
+	<div>
+		<label>
+			&nbsp;';
+
+	jkga_field_exclude_post();
+
+	print '
+			<span>'.__("Exclude this page from tracking.", 'jkga').'</span>
+		</label>
+	</div>';
+}
+
+/**
+ * Save metabox options
+ * @param int $post_id
+ */
+function jkga_metabox_save($post_id)
+{
+	// Check nonce
+	if (!jkga_check_nonce('jkga_metas')) return $post_id;
+
+	// Check user permissions
+	if (get_post_type() === 'page')
+	{
+		if (!current_user_can('edit_page', $post_id)) return $post_id;
+	}
+	else
+	{
+		if (!current_user_can('edit_post', $post_id)) return $post_id;
+	}
+
+	// Check and insert or update metas
+	$metas = array('exclude_post');
+
+	foreach ($metas as $meta)
+	{
+		$field = '_jkga_'.$meta;
+		$checked = (bool) $_POST[$field];
+		$meta = jkga_get_meta($meta);
+
+		if ($checked)
+		{
+			// Update meta
+			if (!is_null($meta))
+			{
+				update_post_meta($post_id, $field, 1);
+			}
+			// Insert meta
+			else
+			{
+				add_post_meta($post_id, $field, 1, TRUE);
+			}
+		}
+		// Delete meta
+		else
+		{
+			delete_post_meta($post_id, $field);
+		}
+	}
+	return $post_id;
+}
+
+/**
  * Add plugin menu
  */
 function jkga_options_menu()
@@ -290,7 +449,9 @@ function jkga_options_page()
 }
 
 /**
- * Validate plugin options
+ * Validate options
+ * @param array $options
+ * @return boolean|array
  */
 function jkga_options_validate(array $options)
 {

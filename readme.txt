@@ -2,18 +2,14 @@
 Contributors: Karl STEIN
 Tags: google, analytics, jk
 Requires at least: 2.7.0
-Tested up to: 3.3.1
-Stable tag: 1.1.1
+Tested up to: 3.3.2
+Stable tag: 1.2
 
-Use Google Analytics on your website.
+Enable Google Analytics on your website.
 
 == Description ==
 
-Enable Google Analytics on your website and see your daily stats on http://www.google.com/analytics.
-
-= Important Note About 1.1 version =
-
-If you upgraded or installed the version 1.1 on the 7th of April and you are experiencing bugs, don't panic you can fix the error by simply upgrading to version 1.1.1 or by removing with your FTP software the plugin's folder located in wordpress plugins directory "wordpress/wp-content/plugins/jk-google-analytics" and then reinstall the new fixed version 1.1.1.
+Enable Google Analytics on your website and get your daily stats on http://www.google.com/analytics.
 
 = Features =
 
@@ -21,6 +17,7 @@ If you upgraded or installed the version 1.1 on the 7th of April and you are exp
 * Track using old Urchin Web Analytics.
 * Exclude contents from tracking (archives, searches, post previews...).
 * Exclude users from tracking (admins, editors, contributors...).
+* Exclude posts and pages from tracking
 
 = Languages =
 
@@ -31,8 +28,7 @@ If you upgraded or installed the version 1.1 on the 7th of April and you are exp
 
 1. Extract the plugin to your plugins directory.
 2. Activate the plugin in the plugins page.
-3. Configure the plugin on the admin settings page.
-4. Enjoy your stats on Google Analytics.
+3. Fill in your Analytics ID on the plugin settings page.
 
 == Screenshots ==
 
@@ -41,6 +37,10 @@ If you upgraded or installed the version 1.1 on the 7th of April and you are exp
 == Frequently Asked Questions ==
 
 == Changelog ==
+
+= 1.2 =
+
+* Added the option to exclude posts and pages.
 
 = 1.1.1 =
 
