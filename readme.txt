@@ -2,8 +2,8 @@
 Contributors: Karl STEIN
 Tags: google, analytics, jk
 Requires at least: 2.7.0
-Tested up to: 3.3.2
-Stable tag: 1.2
+Tested up to: 4.1.1
+Stable tag: 1.3.0
 
 Enable Google Analytics on your website.
 
