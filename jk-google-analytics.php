@@ -3,11 +3,10 @@
 /**
  * Plugin Name: JK - Google Analytics
  * Plugin URI: http://wordpress.org/extend/plugins/jk-google-analytics/
- * Description: Use Google Analytics on your website.
+ * Description: Add Google Analytics on your website.
  * Author: Karl STEIN
- * Author URI: http://www.karl-stein.com/
- * Version: 1.2
- * Licence: GNU GPLv2
+ * Version: 1.3.0
+ * Licence: GNU GPL2
  *
  *
  * This program is free software; you can redistribute it and/or
@@ -63,7 +62,7 @@ define('JKGA_METABOX', 'jkga_metabox');
  * Plugin version
  * @var numeric
  */
-define('JKGA_VERSION', '1.2');
+define('JKGA_VERSION', '1.3.0');
 
 /**
  * Check nonce
@@ -72,7 +71,7 @@ define('JKGA_VERSION', '1.2');
  */
 function jkga_check_nonce($nid)
 {
-	return (bool) (isset($_POST[$nid]) && wp_verify_nonce($_POST[$nid], basename(__FILE__)));
+    return (bool)(isset($_POST[$nid]) && wp_verify_nonce($_POST[$nid], basename(__FILE__)));
 }
 
 /**
@@ -81,7 +80,7 @@ function jkga_check_nonce($nid)
  */
 function jkga_create_nonce($nid)
 {
-	return wp_nonce_field(basename(__FILE__), $nid);
+    return wp_nonce_field(basename(__FILE__), $nid);
 }
 
 /**
@@ -90,22 +89,20 @@ function jkga_create_nonce($nid)
  */
 function jkga_get_domain()
 {
-	$domain = get_bloginfo('siteurl');
+    $domain = get_bloginfo('siteurl');
 
-	if (preg_match('`^[a-z]+\:\/\/([^\:\/]+)`', $domain, $match))
-	{
-		$domain = $match[1];
-	}
+    if (preg_match('`^[a-z]+\:\/\/([^\:\/]+)`', $domain, $match)) {
+        $domain = $match[1];
+    }
 
-	$parts = array_reverse(explode('.', $domain));
-	$domain = '';
+    $parts = array_reverse(explode('.', $domain));
+    $domain = '';
 
-	for ($i = 0; $i < 2; $i++)
-	{
-	if (!isset($parts[$i])) break;
-	$domain = $parts[$i].'.'.$domain;
-	}
-	return trim($domain, '.');
+    for ($i = 0; $i < 2; $i++) {
+        if (!isset($parts[$i])) break;
+        $domain = $parts[$i] . '.' . $domain;
+    }
+    return trim($domain, '.');
 }
 
 /**
@@ -116,13 +113,12 @@ function jkga_get_domain()
  */
 function jkga_get_option($name, $default = NULL)
 {
-	$options = jkga_get_options();
+    $options = jkga_get_options();
 
-	if (is_array($options) && isset($options[$name]))
-	{
-		return $options[$name];
-	}
-	return $default;
+    if (is_array($options) && isset($options[$name])) {
+        return $options[$name];
+    }
+    return $default;
 }
 
 /**
@@ -132,7 +128,7 @@ function jkga_get_option($name, $default = NULL)
  */
 function jkga_get_options($refresh = FALSE)
 {
-	return get_option('jkga_options', array());
+    return get_option('jkga_options', array());
 }
 
 /**
@@ -143,8 +139,8 @@ function jkga_get_options($refresh = FALSE)
  */
 function jkga_get_meta($name, $default = NULL)
 {
-	global $post;
-	return get_post_meta($post->ID, '_jkga_'.$name, TRUE);
+    global $post;
+    return get_post_meta($post->ID, '_jkga_' . $name, TRUE);
 }
 
 /**
@@ -152,23 +148,23 @@ function jkga_get_meta($name, $default = NULL)
  */
 function jkga_init()
 {
-	if (is_admin())
-	{
-		// Load translations
-		load_plugin_textdomain('jkga', NULL, basename(__DIR__).'/languages');
+    if (is_admin()) {
+        // Load translations
+        load_plugin_textdomain('jkga', false, dirname(plugin_basename(__FILE__)) . '/languages');
 
-		// Add admin menu
-		add_action('admin_menu', 'jkga_options_menu');
+        // Add admin menu
+        add_action('admin_menu', 'jkga_options_menu');
 
-		// Prepare options
-		add_action('admin_init', 'jkga_init_options');
+        // Prepare options
+        add_action('admin_init', 'jkga_init_options');
 
-		// Add meta box to posts and pages
-		add_action('admin_init', 'jkga_init_metabox');
-	}
-	// Load script in footer
-	add_action('wp_footer', 'jkga_load_script', 999);
+        // Add meta box to posts and pages
+        add_action('admin_init', 'jkga_init_metabox');
+    }
+    // Load script in footer
+    add_action('wp_footer', 'jkga_load_script', 999);
 }
+
 add_action('init', 'jkga_init');
 
 /**
@@ -176,12 +172,12 @@ add_action('init', 'jkga_init');
  */
 function jkga_init_metabox()
 {
-	// Add metabox to page and post editing
-	add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'post', 'side', 'low');
-	add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'page', 'side', 'low');
+    // Add metabox to page and post editing
+    add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'post', 'side', 'low');
+    add_meta_box(JKGA_METABOX, 'Google Analytics', JKGA_METABOX, 'page', 'side', 'low');
 
-	// Save metas when post is edited
-	add_action('save_post', 'jkga_metabox_save', 10);
+    // Save metas when post is edited
+    add_action('save_post', 'jkga_metabox_save', 10);
 }
 
 /**
@@ -189,57 +185,55 @@ function jkga_init_metabox()
  */
 function jkga_init_options()
 {
-	// Load options methods
-	include_once(dirname(__FILE__).'/options.php');
+    // Load options methods
+    include_once(dirname(__FILE__) . '/options.php');
 
-	// Register plugin options in an Array
-	register_setting('jkga_options', 'jkga_options', 'jkga_options_validate');
+    // Register plugin options in an Array
+    register_setting('jkga_options', 'jkga_options', 'jkga_options_validate');
 
-	// Prepare sections and fields
-	$sections = array(
-		array(
-			'id'			=> 'account_informations',
-			'title'		=> __("Account informations", 'jkga'),
-			'fields'	=> array(
-				'tracking_id'			=> __("Tracking ID", 'jkga').' *',
-				'tracking_target'	=> __("Tracking target", 'jkga'),
-				'urchin_tracking'	=> __("Urchin tracking", 'jkga')
-			)
-		),
-		array(
-			'id'			=> 'excluded_contents',
-			'title'		=> __("Excluded contents", 'jkga'),
-			'fields'	=> array(
-				'exclude_content_archive'			=> __("Exclude archives", 'jkga'),
-				'exclude_content_attachment'	=> __("Exclude attachments", 'jkga'),
-				'exclude_content_page'				=> __("Exclude pages", 'jkga'),
-				'exclude_content_preview'			=> __("Exclude previews (recommended)", 'jkga'),
-				'exclude_content_search'			=> __("Exclude searches", 'jkga')
-			)
-		),
-		array(
-			'id'			=> 'excluded_users',
-			'title'		=> __("Excluded users", 'jkga'),
-			'fields'	=> array(
-				'exclude_user_administrator'	=> __("Exclude administrators (recommended)", 'jkga'),
-				'exclude_user_author'					=> __("Exclude authors", 'jkga'),
-				'exclude_user_contributor'		=> __("Exclude contributors", 'jkga'),
-				'exclude_user_editor'					=> __("Exclude editors", 'jkga'),
-				'exclude_user_subscriber'			=> __("Exclude subscribers", 'jkga'),
-				'exclude_user_visitor'				=> __("Exclude visitors", 'jkga')
-			)
-		)
-	);
+    // Prepare sections and fields
+    $sections = array(
+        array(
+            'id' => 'account_informations',
+            'title' => __("Account informations", 'jkga'),
+            'fields' => array(
+                'tracking_id' => __("Tracking ID", 'jkga') . ' *',
+                'tracking_target' => __("Tracking target", 'jkga'),
+                'urchin_tracking' => __("Urchin tracking", 'jkga')
+            )
+        ),
+        array(
+            'id' => 'excluded_contents',
+            'title' => __("Excluded contents", 'jkga'),
+            'fields' => array(
+                'exclude_content_archive' => __("Exclude archives", 'jkga'),
+                'exclude_content_attachment' => __("Exclude attachments", 'jkga'),
+                'exclude_content_page' => __("Exclude pages", 'jkga'),
+                'exclude_content_preview' => __("Exclude previews (recommended)", 'jkga'),
+                'exclude_content_search' => __("Exclude searches", 'jkga')
+            )
+        ),
+        array(
+            'id' => 'excluded_users',
+            'title' => __("Excluded users", 'jkga'),
+            'fields' => array(
+                'exclude_user_administrator' => __("Exclude administrators (recommended)", 'jkga'),
+                'exclude_user_author' => __("Exclude authors", 'jkga'),
+                'exclude_user_contributor' => __("Exclude contributors", 'jkga'),
+                'exclude_user_editor' => __("Exclude editors", 'jkga'),
+                'exclude_user_subscriber' => __("Exclude subscribers", 'jkga'),
+                'exclude_user_visitor' => __("Exclude visitors", 'jkga')
+            )
+        )
+    );
 
-	foreach ($sections as $number => $section)
-	{
-		add_settings_section($section['id'], ($number + 1).'. '.$section['title'], 'jkga_section_'.$section['id'], JKGA_OPTIONS_PAGE);
+    foreach ($sections as $number => $section) {
+        add_settings_section($section['id'], ($number + 1) . '. ' . $section['title'], 'jkga_section_' . $section['id'], JKGA_OPTIONS_PAGE);
 
-		foreach ($section['fields'] as $field_id => $field_title)
-		{
-			add_settings_field($field_id, $field_title, 'jkga_field_'.$field_id, JKGA_OPTIONS_PAGE, $section['id']);
-		}
-	}
+        foreach ($section['fields'] as $field_id => $field_title) {
+            add_settings_field($field_id, $field_title, 'jkga_field_' . $field_id, JKGA_OPTIONS_PAGE, $section['id']);
+        }
+    }
 }
 
 /**
@@ -248,13 +242,13 @@ function jkga_init_options()
  */
 function jkga_is_excluded_content()
 {
-	return (bool) (
-		jkga_get_option('exclude_content_archive') && is_archive()
-		|| jkga_get_option('exclude_content_attachment') && is_attachment()
-		|| jkga_get_option('exclude_content_page') && is_page()
-		|| jkga_get_option('exclude_content_preview', TRUE) && is_preview()
-		|| jkga_get_option('exclude_content_search') && is_search()
-	);
+    return (bool)(
+        jkga_get_option('exclude_content_archive') && is_archive()
+        || jkga_get_option('exclude_content_attachment') && is_attachment()
+        || jkga_get_option('exclude_content_page') && is_page()
+        || jkga_get_option('exclude_content_preview', TRUE) && is_preview()
+        || jkga_get_option('exclude_content_search') && is_search()
+    );
 }
 
 /**
@@ -263,7 +257,7 @@ function jkga_is_excluded_content()
  */
 function jkga_is_excluded_post()
 {
-	return (bool) jkga_get_meta('exclude_post');
+    return (bool)jkga_get_meta('exclude_post');
 }
 
 /**
@@ -272,14 +266,14 @@ function jkga_is_excluded_post()
  */
 function jkga_is_excluded_user()
 {
-	return (bool) (
-		jkga_get_option('exclude_user_administrator', TRUE) && jkga_user_has_role('administrator')
-		|| jkga_get_option('exclude_user_author') && jkga_user_has_role('author')
-		|| jkga_get_option('exclude_user_contributor') && jkga_user_has_role('contributor')
-		|| jkga_get_option('exclude_user_editor') && jkga_user_has_role('editor')
-		|| jkga_get_option('exclude_user_subscriber') && jkga_user_has_role('subscriber')
-		|| jkga_get_option('exclude_user_visitor') && !jkga_user_has_role()
-	);
+    return (bool)(
+        jkga_get_option('exclude_user_administrator', TRUE) && jkga_user_has_role('administrator')
+        || jkga_get_option('exclude_user_author') && jkga_user_has_role('author')
+        || jkga_get_option('exclude_user_contributor') && jkga_user_has_role('contributor')
+        || jkga_get_option('exclude_user_editor') && jkga_user_has_role('editor')
+        || jkga_get_option('exclude_user_subscriber') && jkga_user_has_role('subscriber')
+        || jkga_get_option('exclude_user_visitor') && !jkga_user_has_role()
+    );
 }
 
 /**
@@ -288,11 +282,11 @@ function jkga_is_excluded_user()
  */
 function jkga_is_tracked()
 {
-	return (bool) (
-		!jkga_is_excluded_content()
-		&& !jkga_is_excluded_user()
-		&& !jkga_is_excluded_post()
-	);
+    return (bool)(
+        !jkga_is_excluded_content()
+        && !jkga_is_excluded_user()
+        && !jkga_is_excluded_post()
+    );
 }
 
 /**
@@ -300,39 +294,32 @@ function jkga_is_tracked()
  */
 function jkga_load_script()
 {
-	if (jkga_is_tracked())
-	{
-		// Enable tracking only if a tracking ID exists
-		if (jkga_get_option('tracking_id'))
-		{
-			print '
+    if (jkga_is_tracked()) {
+        // Enable tracking only if a tracking ID exists
+        if (jkga_get_option('tracking_id')) {
+            print '
 			<script type="text/javascript">
 				var _gaq = _gaq || [];
-				_gaq.push(["_setAccount", "'.jkga_get_option('tracking_id').'"]);';
+				_gaq.push(["_setAccount", "' . jkga_get_option('tracking_id') . '"]);';
 
-			// Extract domain from site URL
-			$domain = jkga_get_domain();
+            // Extract domain from site URL
+            $domain = jkga_get_domain();
 
-			// Track multiple subdomains
-			if (jkga_get_option('tracking_target') == JKGA_MULTIPLE_SUBDOMAINS)
-			{
-				print "\n".'_gaq.push(["_setDomainName", "'.$domain.'"]);';
-			}
+            // Track multiple subdomains
+            if (jkga_get_option('tracking_target') == JKGA_MULTIPLE_SUBDOMAINS) {
+                print "\n" . '_gaq.push(["_setDomainName", "' . $domain . '"]);';
+            } // Track multiple domains
+            else if (jkga_get_option('tracking_target') == JKGA_MULTIPLE_DOMAINS) {
+                print "\n" . '_gaq.push(["_setDomainName", "' . $domain . '"]);';
+                print "\n" . '_gaq.push(["_setAllowLinker", true]);';
+            }
 
-			// Track multiple domains
-			else if (jkga_get_option('tracking_target') == JKGA_MULTIPLE_DOMAINS)
-			{
-				print "\n".'_gaq.push(["_setDomainName", "'.$domain.'"]);';
-				print "\n".'_gaq.push(["_setAllowLinker", true]);';
-			}
+            // Track using Urchin Software
+            if (jkga_get_option('urchin_tracking') == 1) {
+                print "\n" . '_gaq.push(["_setLocalRemoteServerMode"]);';
+            }
 
-			// Track using Urchin Software
-			if (jkga_get_option('urchin_tracking') == 1)
-			{
-				print "\n".'_gaq.push(["_setLocalRemoteServerMode"]);';
-			}
-
-			print '
+            print '
 				_gaq.push(["_trackPageview"]);
 				(function() {
 					var ga = document.createElement("script"); ga.type = "text/javascript"; ga.async = true;
@@ -340,8 +327,8 @@ function jkga_load_script()
 					var s = document.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ga, s);
 				})();
 			</script>';
-		}
-	}
+        }
+    }
 }
 
 /**
@@ -349,18 +336,18 @@ function jkga_load_script()
  */
 function jkga_metabox()
 {
-	// Generate nonce
-	jkga_create_nonce('jkga_metas');
+    // Generate nonce
+    jkga_create_nonce('jkga_metas');
 
-	print '
+    print '
 	<div>
 		<label>
 			&nbsp;';
 
-	jkga_field_exclude_post();
+    jkga_field_exclude_post();
 
-	print '
-			<span>'.__("Exclude this page from tracking.", 'jkga').'</span>
+    print '
+			<span>' . __("Exclude this page from tracking.", 'jkga') . '</span>
 		</label>
 	</div>';
 }
@@ -371,48 +358,38 @@ function jkga_metabox()
  */
 function jkga_metabox_save($post_id)
 {
-	// Check nonce
-	if (!jkga_check_nonce('jkga_metas')) return $post_id;
+    // Check nonce
+    if (!jkga_check_nonce('jkga_metas')) return $post_id;
 
-	// Check user permissions
-	if (get_post_type() === 'page')
-	{
-		if (!current_user_can('edit_page', $post_id)) return $post_id;
-	}
-	else
-	{
-		if (!current_user_can('edit_post', $post_id)) return $post_id;
-	}
+    // Check user permissions
+    if (get_post_type() === 'page') {
+        if (!current_user_can('edit_page', $post_id)) return $post_id;
+    } else {
+        if (!current_user_can('edit_post', $post_id)) return $post_id;
+    }
 
-	// Check and insert or update metas
-	$metas = array('exclude_post');
+    // Check and insert or update metas
+    $metas = array('exclude_post');
 
-	foreach ($metas as $meta)
-	{
-		$field = '_jkga_'.$meta;
-		$checked = (bool) $_POST[$field];
-		$meta = jkga_get_meta($meta);
+    foreach ($metas as $meta) {
+        $field = '_jkga_' . $meta;
+        $checked = (bool)$_POST[$field];
+        $meta = jkga_get_meta($meta);
 
-		if ($checked)
-		{
-			// Update meta
-			if (!is_null($meta))
-			{
-				update_post_meta($post_id, $field, 1);
-			}
-			// Insert meta
-			else
-			{
-				add_post_meta($post_id, $field, 1, TRUE);
-			}
-		}
-		// Delete meta
-		else
-		{
-			delete_post_meta($post_id, $field);
-		}
-	}
-	return $post_id;
+        if ($checked) {
+            // Update meta
+            if (!is_null($meta)) {
+                update_post_meta($post_id, $field, 1);
+            } // Insert meta
+            else {
+                add_post_meta($post_id, $field, 1, TRUE);
+            }
+        } // Delete meta
+        else {
+            delete_post_meta($post_id, $field);
+        }
+    }
+    return $post_id;
 }
 
 /**
@@ -420,7 +397,7 @@ function jkga_metabox_save($post_id)
  */
 function jkga_options_menu()
 {
-	add_options_page('Google Analytics', 'Google Analytics', 'manage_options', JKGA_OPTIONS_PAGE, 'jkga_options_page');
+    add_options_page('Google Analytics', 'Google Analytics', 'manage_options', JKGA_OPTIONS_PAGE, 'jkga_options_page');
 }
 
 /**
@@ -428,21 +405,21 @@ function jkga_options_menu()
  */
 function jkga_options_page()
 {
-	print '
+    print '
 	<div class="wrap">
 		<div id="icon-options-general" class="icon32"></div>
-		<h2>'.__("Google Analytics options", 'jkga').'</h2>
+		<h2>' . __("Google Analytics options", 'jkga') . '</h2>
 		<form method="post" action="options.php">';
 
-	// Print hidden inputs
-	settings_fields('jkga_options');
+    // Print hidden inputs
+    settings_fields('jkga_options');
 
-	// Print sections and fields
-	do_settings_sections(JKGA_OPTIONS_PAGE);
+    // Print sections and fields
+    do_settings_sections(JKGA_OPTIONS_PAGE);
 
-	print '
+    print '
 		<p class="submit">
-			<input type="submit" value="'.__("Save Changes").'" class="button-primary" />
+			<input type="submit" value="' . __("Save Changes") . '" class="button-primary" />
 		</p>
 		</form>
 	</div>';
@@ -455,46 +432,43 @@ function jkga_options_page()
  */
 function jkga_options_validate(array $options)
 {
-	// Check tracking ID
-	if (empty($options['tracking_id']))
-	{
-		add_settings_error('tracking_id', 'tracking_id', __("Incorrect tracking ID."));
-	}
+    // Check tracking ID
+    if (empty($options['tracking_id'])) {
+        add_settings_error('tracking_id', 'tracking_id', __("Incorrect tracking ID."));
+    }
 
-	// Check tracking target
-	if (!isset($options['tracking_target'])
-	|| ($options['tracking_target'] != JKGA_SINGLE_DOMAIN
-	&& $options['tracking_target'] != JKGA_MULTIPLE_DOMAINS
-	&& $options['tracking_target'] != JKGA_MULTIPLE_SUBDOMAINS
-	))
-	{
-		add_settings_error('tracking_target', 'tracking_target', __("Incorrect tracking target."));
-	}
+    // Check tracking target
+    if (!isset($options['tracking_target'])
+        || ($options['tracking_target'] != JKGA_SINGLE_DOMAIN
+            && $options['tracking_target'] != JKGA_MULTIPLE_DOMAINS
+            && $options['tracking_target'] != JKGA_MULTIPLE_SUBDOMAINS
+        )
+    ) {
+        add_settings_error('tracking_target', 'tracking_target', __("Incorrect tracking target."));
+    }
 
-	// Validate checkboxes
-	$boolean_options = array(
-		'urchin_tracking',
-		'exclude_content_archive',
-		'exclude_content_attachment',
-		'exclude_content_page',
-		'exclude_content_preview',
-		'exclude_content_search',
-		'exclude_user_administrator',
-		'exclude_user_author',
-		'exclude_user_contributor',
-		'exclude_user_editor',
-		'exclude_user_subscriber',
-		'exclude_user_visitor'
-	);
+    // Validate checkboxes
+    $boolean_options = array(
+        'urchin_tracking',
+        'exclude_content_archive',
+        'exclude_content_attachment',
+        'exclude_content_page',
+        'exclude_content_preview',
+        'exclude_content_search',
+        'exclude_user_administrator',
+        'exclude_user_author',
+        'exclude_user_contributor',
+        'exclude_user_editor',
+        'exclude_user_subscriber',
+        'exclude_user_visitor'
+    );
 
-	foreach ($boolean_options as $name)
-	{
-		if (!isset($options[$name]) || $options[$name] != 1)
-		{
-			$options[$name] = 0;
-		}
-	}
-	return (array) $options;
+    foreach ($boolean_options as $name) {
+        if (!isset($options[$name]) || $options[$name] != 1) {
+            $options[$name] = 0;
+        }
+    }
+    return (array)$options;
 }
 
 /**
@@ -502,7 +476,7 @@ function jkga_options_validate(array $options)
  */
 function jkga_section_account_informations()
 {
-	print '<p><em>'.__("Fill in your account informations.", 'jkga').'</em></p>';
+    print '<p><em>' . __("Fill in your account informations.", 'jkga') . '</em></p>';
 }
 
 /**
@@ -510,7 +484,7 @@ function jkga_section_account_informations()
  */
 function jkga_section_excluded_contents()
 {
-	print '<p><em>'.__("Select the contents you don't want to track.", 'jkga').'</em></p>';
+    print '<p><em>' . __("Select the contents you don't want to track.", 'jkga') . '</em></p>';
 }
 
 /**
@@ -518,7 +492,7 @@ function jkga_section_excluded_contents()
  */
 function jkga_section_excluded_users()
 {
-	print '<p><em>'.__("Select the users you don't want to track.", 'jkga').'</em></p>';
+    print '<p><em>' . __("Select the users you don't want to track.", 'jkga') . '</em></p>';
 }
 
 /**
@@ -526,7 +500,7 @@ function jkga_section_excluded_users()
  */
 function jkga_uninstall()
 {
-	delete_option('jkga_options');
+    delete_option('jkga_options');
 }
 
 /**
@@ -536,18 +510,16 @@ function jkga_uninstall()
  */
 function jkga_user_has_role($name = '')
 {
-	global $current_user;
+    global $current_user;
 
-	get_currentuserinfo();
+    get_currentuserinfo();
 
-	if (is_array($current_user->roles))
-	{
-		if ($name != '' && in_array($name, $current_user->roles))
-		{
-			return TRUE;
-		}
-	}
-	return FALSE;
+    if (is_array($current_user->roles)) {
+        if ($name != '' && in_array($name, $current_user->roles)) {
+            return TRUE;
+        }
+    }
+    return FALSE;
 }
 
 ?>
